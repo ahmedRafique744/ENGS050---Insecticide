@@ -1,19 +1,15 @@
-CC = gcc
-CFLAGS = -Wall -pedantic -std=c11 -I. -g
+CFLAGS=-Wall -pedantic -std=c11 -I. -g
 
-all: ListTest
+all: new_test
 
-list.o: list.c list.h
-	$(CC) $(CFLAGS) -c list.c
+new_test: queue.o new_test.o
+	$(CC) $(CFLAGS) queue.o new_test.o -o $@
 
-ListTest.o: ListTest.c list.h
-	$(CC) $(CFLAGS) -c ListTest.c
-
-ListTest: list.o ListTest.o
-	$(CC) $(CFLAGS) list.o ListTest.o -o ListTest
-
-test: ListTest
-	./ListTest
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f *.o ListTest
+	rm -f *.o new_test
+
+run: new_test
+	./new_test
