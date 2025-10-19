@@ -1,28 +1,19 @@
-# CFLAGS for compiling
+CC = gcc
 CFLAGS = -Wall -pedantic -std=c11 -I. -g
 
-# Object files for the modules
-MOD_OBJS = queue.o hash.o
+all: ListTest
 
-# The main test executable
-TARGET = hashTest
+list.o: list.c list.h
+	$(CC) $(CFLAGS) -c list.c
 
-# The default 'make' command will build the hashTest executable
-all: $(TARGET)
+ListTest.o: ListTest.c list.h
+	$(CC) $(CFLAGS) -c ListTest.c
 
-# Rule for linking the final executable
-$(TARGET): $(TARGET).o $(MOD_OBJS)
-	gcc $(CFLAGS) $^ -o $@
+ListTest: list.o ListTest.o
+	$(CC) $(CFLAGS) list.o ListTest.o -o ListTest
 
-# Pattern rule to compile any .c file into a .o file
-# This rule you already had works perfectly.
-%.o: %.c
-	gcc $(CFLAGS) -c $< -o $@
+test: ListTest
+	./ListTest
 
-# Rule for running the test
-test: $(TARGET)
-	./$(TARGET)
-
-# Rule to clean up compiled files
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o ListTest
